@@ -1,11 +1,6 @@
 package com.gree.quartz.job;
 
-import com.gree.bean.User;
-import com.gree.bean.UserProfile;
-import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
-import org.nutz.dao.Sqls;
-import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
@@ -13,8 +8,6 @@ import org.nutz.log.Logs;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-
-import java.util.Date;
 
 /**
  * @user: 180296-Web寻梦狮
@@ -30,7 +23,7 @@ public class CleanNonActiveUserJob implements Job {
     protected Dao dao;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        log.debug("clean Non-Active User , start");
+       /* log.debug("clean Non-Active User , start");
         Date deadtime = new Date(System.currentTimeMillis() - 24*60*60*1000L); // 一天, 测试的时候可以改成1小时之类的
         Cnd cnd = Cnd.where("userId", ">", 3).and("createTime", "<", deadtime).and(Cnd.exps("emailChecked", "=", false).or("email", "IS", null));
         int deleted = dao.clear(UserProfile.class, cnd);
@@ -43,6 +36,6 @@ public class CleanNonActiveUserJob implements Job {
         dao.execute(sql);
         log.debugf("delete %d User", sql.getUpdateCount());
 
-        log.debug("clean Non-Active User , Done");
+        log.debug("clean Non-Active User , Done");*/
     }
 }

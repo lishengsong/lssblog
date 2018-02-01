@@ -7,17 +7,15 @@ package com.gree.util;
  *    3DES加密的封装、kv字符串转换、密码加密hash
  */
 
+import org.nutz.lang.Lang;
+import org.nutz.lang.util.NutMap;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.gree.bean.User;
-import org.nutz.lang.Lang;
-import org.nutz.lang.random.R;
-import org.nutz.lang.util.NutMap;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 
 
 public class Toolkit {
@@ -83,13 +81,13 @@ public class Toolkit {
         return re;
     }
 
-    public static String randomPasswd(User usr) {
+   /* public static String randomPasswd(User usr) {
         String passwd = R.sg(10).next();
         String slat = R.sg(48).next();
         usr.setSalt(slat);
         usr.setPassword(passwordEncode(passwd, slat));
         return passwd;
-    }
+    }*/
 
     public static byte[] hexstr2bytearray(String str) {
         byte[] re = new byte[str.length() / 2];

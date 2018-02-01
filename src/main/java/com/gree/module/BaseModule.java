@@ -1,6 +1,5 @@
 package com.gree.module;
 
-import com.gree.service.EmailService;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.QueryResult;
@@ -20,8 +19,8 @@ public abstract class BaseModule {
     @Inject
     protected Dao dao;
 
-    @Inject
-    protected EmailService emailService;
+ /*   @Inject
+    protected EmailService emailService;*/
 
     protected QueryResult query(Class<?> klass, Condition cnd, Pager pager, String regex) {
         if (pager != null && pager.getPageNumber() < 1) {

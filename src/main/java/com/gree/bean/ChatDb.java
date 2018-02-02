@@ -7,7 +7,7 @@ import org.nutz.dao.entity.annotation.*;
  * @date: 2018-02-01 16:15
  * @description: 聊天db
  */
-public class ChatDb {
+public class ChatDb extends BaseBean{
 
     /*CREATE TABLE `bjy_chat` (
             `chid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '碎言id',

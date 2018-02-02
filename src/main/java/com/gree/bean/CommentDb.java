@@ -12,7 +12,7 @@ public class CommentDb extends BaseBean{
 
     /*CREATE TABLE `tb_comment` (
                 `cmtid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
-                `ouid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '评论用户id 关联oauth_user表的id',
+                `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '评论用户id 关联oauth_user表的id',
                 `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1：文章评论',
                 `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级id',
                 `aid` int(10) unsigned NOT NULL COMMENT '文章id',

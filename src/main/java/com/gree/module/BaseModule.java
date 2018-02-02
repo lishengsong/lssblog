@@ -33,10 +33,10 @@ public abstract class BaseModule {
     }
 
     protected NutMap ajaxOk(Object data) {
-        return new NutMap().setv("ok", true).setv("data", data);
+        return new NutMap().setv("status", true).setv("data", data);
     }
 
     protected NutMap ajaxFail(String msg) {
-        return new NutMap().setv("ok", false).setv("msg", msg);
+        return new NutMap().setv("status", false).setv("msg", msg);
     }
 }

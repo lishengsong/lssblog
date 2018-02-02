@@ -1,9 +1,6 @@
 package com.gree.bean;
 
-import org.nutz.dao.entity.annotation.ColDefine;
-import org.nutz.dao.entity.annotation.Column;
-import org.nutz.dao.entity.annotation.Name;
-import org.nutz.dao.entity.annotation.Table;
+import org.nutz.dao.entity.annotation.*;
 
 /**
  * @user: 180296-Web寻梦狮
@@ -12,7 +9,30 @@ import org.nutz.dao.entity.annotation.Table;
  */
 @Table("tb_user")
 public class UserDb extends BaseBean{
+    /*CREATE TABLE `tb_user` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+            `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联的本站用户id',
+            `type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '类型 1：QQ  2：新浪微博 3：豆瓣 4：人人 5：开心网',
+            `nickname` varchar(30) NOT NULL DEFAULT '' COMMENT '第三方昵称',
+            `head_img` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
+            `openid` varchar(40) NOT NULL DEFAULT '' COMMENT '第三方用户id',
+            `access_token` varchar(255) NOT NULL DEFAULT '' COMMENT 'access_token token',
+            `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '绑定时间',
+            `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
+            `last_login_ip` varchar(16) NOT NULL DEFAULT '' COMMENT '最后登录ip',
+            `login_times` int(6) unsigned NOT NULL DEFAULT '0' COMMENT '登录次数',
+            `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+            `email` varchar(255) NOT NULL DEFAULT '' COMMENT '邮箱',
+            `is_admin` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否是admin',
+            `is_vip` tinyint(2) unsigned DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;*/
 
+
+    @Id
+    @ColDefine(unsigned = true, notNull = true)
+    @Comment("uid")
+    private int uid ;
 
     @Name
     @ColDefine(width = 100, notNull = true)
@@ -29,6 +49,12 @@ public class UserDb extends BaseBean{
     @Column
     @ColDefine(width = 400)
     private String photo;
+
+    @Column("is_admin")
+    @Default("0")
+    @ColDefine(unsigned = true,width = 1, notNull = true)
+    @Comment("是否是管理员")
+    private int isAdmin ;
 
 
     public String getUsername() {
@@ -61,5 +87,21 @@ public class UserDb extends BaseBean{
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

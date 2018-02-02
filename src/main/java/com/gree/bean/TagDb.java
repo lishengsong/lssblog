@@ -40,4 +40,12 @@ public class TagDb  extends BaseBean{
     public void setTname(String tname) {
         this.tname = tname;
     }
+
+    public List<ArticleDb> getArticleDbs() {
+        return articleDbs;
+    }
+
+    public void setArticleDbs(List<ArticleDb> articleDbs) {
+        this.articleDbs = articleDbs;
+    }
 }

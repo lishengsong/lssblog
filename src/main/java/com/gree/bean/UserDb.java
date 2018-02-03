@@ -28,12 +28,6 @@ public class UserDb extends BaseBean{
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;*/
 
-
-    @Id
-    @ColDefine(unsigned = true, notNull = true)
-    @Comment("uid")
-    private int uid ;
-
     @Name
     @ColDefine(width = 100, notNull = true)
     private String username;
@@ -43,7 +37,7 @@ public class UserDb extends BaseBean{
     private String password;
 
     @Column
-    @ColDefine(width = 100, notNull = true)
+    @ColDefine(width = 100)
     private String nickname;
 
     @Column
@@ -56,6 +50,13 @@ public class UserDb extends BaseBean{
     @Comment("是否是管理员")
     private int isAdmin ;
 
+
+    public UserDb(){};
+
+    public UserDb(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;
@@ -89,13 +90,6 @@ public class UserDb extends BaseBean{
         this.photo = photo;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
 
     public int getIsAdmin() {
         return isAdmin;
@@ -104,4 +98,6 @@ public class UserDb extends BaseBean{
     public void setIsAdmin(int isAdmin) {
         this.isAdmin = isAdmin;
     }
+
+
 }

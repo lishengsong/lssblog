@@ -4,27 +4,9 @@
          version="3.1">
   <display-name>nutz</display-name>
 
-
- <!-- <listener>
-    <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
-  </listener>
-  <filter>
-    <filter-name>ShiroFilter</filter-name>
-    <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>ShiroFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
-    <dispatcher>INCLUDE</dispatcher>
-    <dispatcher>ERROR</dispatcher>
-  </filter-mapping>-->
-
   <filter>
     <filter-name>nutz</filter-name>
-    <filter-class>com.gree.mvc.NutzStudyNutFilter</filter-class>
+    <filter-class>com.gree.mvc.MainNutFilter</filter-class>
     <init-param>
       <param-name>modules</param-name>
       <param-value>com.gree.MainModule</param-value>
@@ -34,6 +16,8 @@
       <param-value>/rs/*,/druid/*</param-value>
     </init-param>-->
   </filter>
+
+
   <filter-mapping>
     <filter-name>nutz</filter-name>
     <url-pattern>/*</url-pattern>

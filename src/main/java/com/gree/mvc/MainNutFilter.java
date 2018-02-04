@@ -38,6 +38,7 @@ public class  MainNutFilter extends NutFilter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+
         if (req instanceof HttpServletRequest) {
             String uri = ((HttpServletRequest) req).getRequestURI();
             for (String prefix : prefixs) {

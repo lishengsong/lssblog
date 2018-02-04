@@ -9,8 +9,8 @@ import com.gree.bean.UserDb;
  */
 public interface UserService {
 
-    public UserDb add(UserDb user);
+    UserDb add(UserDb user);
 
-    public UserDb fetch(String username, String password);
+    UserDb fetch(String username, String password);
 
 }

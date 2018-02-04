@@ -1,5 +1,6 @@
-package com.gree.mvc;
+package com.gree.mvc.filter;
 
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2018-02-03 15:02
  * @description: 允许跨域
  */
+@IocBean(name="crossFilter")
 public class CrossOriginsFilter implements ActionFilter {
     private static final Log log =Logs.get();
     protected String origin;
@@ -36,6 +38,7 @@ public class CrossOriginsFilter implements ActionFilter {
     }
 
     public View match(ActionContext ac) {
+        System.out.println("crossFilter");
         HttpServletResponse resp = ac.getResponse();
         HttpServletRequest request = ac.getRequest();
 

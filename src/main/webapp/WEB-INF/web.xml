@@ -11,10 +11,10 @@
       <param-name>modules</param-name>
       <param-value>com.gree.MainModule</param-value>
     </init-param>
-<!--    <init-param>
+    <init-param>
       <param-name>exclusions</param-name>
-      <param-value>/rs/*,/druid/*</param-value>
-    </init-param>-->
+      <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*,/rs/*</param-value>
+    </init-param>
   </filter>
 
 

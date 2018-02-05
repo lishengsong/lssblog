@@ -50,7 +50,7 @@ public class SwaggerModule {
         log.info("init swagger ...");
         swagger = new Swagger();
         Info info = new Info();
-        info.title("ABC....");
+        info.title("lssblog-Api");
         swagger.info(info);
         HashSet<Class<?>> classes = new HashSet<Class<?>>();
         // 把下来的package路径改成你自己的package路径

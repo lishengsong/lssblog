@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.gree</groupId>
-  <artifactId>nutzStudy</artifactId>
+  <artifactId>lssBlog</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>nutzStudy Maven Webapp</name>
+  <name>lssblog Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <!-- UTF8大法好 -->
   <properties>
@@ -28,7 +28,7 @@
     <commons-logging.version>1.2</commons-logging.version>
     <commons-beanutils.version>1.9.3</commons-beanutils.version>
     <jsonwebtoken.version>0.7.0</jsonwebtoken.version>
-    <swagger.version>1.5.16</swagger.version>
+    <swagger.version>1.5.18</swagger.version>
 
   </properties>
 
@@ -169,7 +169,7 @@
 
   </dependencies>
   <build>
-    <finalName>nutzStudy</finalName>
+    <finalName>lssBlog</finalName>
   </build>
   <repositories>
     <repository>

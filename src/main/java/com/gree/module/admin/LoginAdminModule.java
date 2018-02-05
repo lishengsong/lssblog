@@ -2,13 +2,11 @@ package com.gree.module.admin;
 
 import com.gree.bean.UserDb;
 import com.gree.mvc.filter.AccessTokenFilter;
-import com.gree.mvc.filter.CrossOriginsFilter;
 import com.gree.mvc.context.UserContext;
 import com.gree.security.JwtTonken;
 import com.gree.service.impl.UserServiceImpl;
 import com.gree.util.Rs;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
@@ -29,10 +27,16 @@ public class LoginAdminModule {
     @Inject
     UserServiceImpl userService;
 
+    @ApiOperation(httpMethod = "POST",
+            value = "返回一个用户信息",
+            response = Rs.class,
+            nickname="login")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", paramType="form", value = "用户名", dataType="string", required = true)
+            ,@ApiImplicitParam(name = "password", paramType="form", value = "密码", dataType="string", required = true)})
     @POST
     //@Filters(@By(type = CrossOriginsFilter.class,args = {"ioc:crossFilter"}))
     @At("/login")
-    public Rs dologin(@Param("username") String username, @Param("password") String password) {
+    public Rs dologin(@Param("username")  String username, @Param("password") String password) {
 
         Rs<UserDb> rs = new Rs<UserDb>();
         if(Strings.isBlank(username) || Strings.isBlank(password)){
@@ -64,7 +68,7 @@ public class LoginAdminModule {
     /*@Filters({@By(type = CrossOriginsFilter.class,args = {"ioc:crossFilter"})
             ,@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"})})*/
     @GET
-    @ApiOperation(value = "心跳接口", notes = "发我一个ping,回你一个pong", httpMethod="GET")
+    @ApiOperation(value = "退出登录接口", notes = "退出销毁", httpMethod="GET", response = Rs.class)
     @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
     @At("/logout")
     public Rs doLogout(){

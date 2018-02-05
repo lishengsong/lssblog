@@ -21,7 +21,7 @@ public class CrossOriginProcessor extends AbstractProcessor {
     protected String credentials;
 
     public CrossOriginProcessor() {
-        initData("http://127.0.0.1:8080", "get, post, put, delete, options", "origin, content-type, accept, url", "true");
+        initData("http://127.0.0.1:8080", "get, post, put, delete, options", "origin, content-type, accept, url, Authorization", "true");
         //http://localhost:63343
     }
     public void initData(String origin, String methods, String headers, String credentials) {

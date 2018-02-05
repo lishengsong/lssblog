@@ -68,7 +68,8 @@ public class LoginAdminModule {
     /*@Filters({@By(type = CrossOriginsFilter.class,args = {"ioc:crossFilter"})
             ,@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"})})*/
     @GET
-    @ApiOperation(value = "退出登录接口", notes = "退出销毁", httpMethod="GET", response = Rs.class)
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true))
+    @ApiOperation(value = "退出登录接口", notes = "退出销毁", httpMethod="GET", response = Rs.class, nickname = "logout")
     @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
     @At("/logout")
     public Rs doLogout(){

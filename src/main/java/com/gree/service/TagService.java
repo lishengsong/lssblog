@@ -11,8 +11,8 @@ import java.util.List;
  */
 public interface TagService {
 
-    TagDb add();
+    TagDb add(TagDb tag);
     TagDb fetch(int id);
     int edit(TagDb tag);
-    List<TagDb> query(TagDb tag);
+
 }

@@ -17,6 +17,7 @@ public class TagDb  extends BaseBean{
     @Comment("标签主键")
     private int tid ;
 
+    @Name
     @Column
     @ColDefine(width = 15)
     @Comment("标签名称")

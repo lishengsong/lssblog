@@ -22,7 +22,7 @@ public abstract class BaseModule {
  /*   @Inject
     protected EmailService emailService;*/
 
-    protected QueryResult query(Class<?> klass, Condition cnd, Pager pager, String regex) {
+/*    protected QueryResult query(Class<?> klass, Condition cnd, Pager pager, String regex) {
         if (pager != null && pager.getPageNumber() < 1) {
             pager.setPageNumber(1);
         }
@@ -30,7 +30,7 @@ public abstract class BaseModule {
         dao.fetchLinks(roles, null);
         pager.setRecordCount(dao.count(klass, cnd));
         return new QueryResult(roles, pager);
-    }
+    }*/
 
     protected NutMap ajaxOk(Object data) {
         return new NutMap().setv("status", true).setv("data", data);

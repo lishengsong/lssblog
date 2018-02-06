@@ -4,10 +4,10 @@ import com.gree.bean.TagDb;
 import com.gree.mvc.filter.AccessTokenFilter;
 import com.gree.service.impl.TagServiceImpl;
 import com.gree.util.Rs;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
+import org.nutz.dao.Cnd;
+import org.nutz.dao.QueryResult;
+import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
@@ -27,7 +27,7 @@ import org.nutz.mvc.annotation.*;
 @Chain("crossOrigin")
 public class TagAdminModule {
     @Inject
-    TagServiceImpl tagService;
+    protected TagServiceImpl tagService;
 
     @ApiOperation(httpMethod = "POST",
             value = "返回标签对象",
@@ -53,5 +53,25 @@ public class TagAdminModule {
             else return Rs.builder().code(Rs.FAIL).msg("新增标签失败").build();
         }
     }
+
+    @ApiOperation(httpMethod = "POST",
+            value = "根据分页参数和标签名，返回标签列表",
+            response = QueryResult.class,
+            nickname="query")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tname", paramType="form", value = "标签名称", dataType="string", required = false)
+            ,@ApiImplicitParam(name = "pageSize", paramType="form", value = "每页显示的数目", dataType="long", required = false, defaultValue = "5")
+            ,@ApiImplicitParam(name = "pageNumber", paramType="form", value = "第几页", dataType="long", required = false, defaultValue = "1")
+            ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
+    })
+    @POST
+    @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
+    @At("/query")
+    public QueryResult queryList(@Param("tname")String tagName
+            ,@ApiParam(name="Pager",value="分页类",required=false) @Param("..")Pager pager){
+        Cnd cnd = Strings.isBlank(tagName) ? null : Cnd.where("tname", "like", "%"+tagName+"%");
+        return tagService.query(TagDb.class,cnd,pager,null);
+    }
+
 
 }

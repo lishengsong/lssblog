@@ -19,7 +19,7 @@ public abstract class BaseService {
     @Inject
     protected Dao dao;
 
-    protected QueryResult query(Class<?> klass, Condition cnd, Pager pager, String regex) {
+    public QueryResult query(Class<?> klass, Condition cnd, Pager pager, String regex) {
         if (pager != null && pager.getPageNumber() < 1) {
             pager.setPageNumber(1);
         }

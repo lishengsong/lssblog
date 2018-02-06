@@ -44,7 +44,8 @@ public class AccessTokenFilter implements ActionFilter{
             try {
                 actionContext.getResponse().getWriter().append(Json.toJson(resultBean));
             } catch (IOException e1) {
-                e1.printStackTrace();
+                throw new RuntimeException(e1.getMessage());
+                //e1.printStackTrace();
             }
             return new VoidView();
         }
@@ -52,7 +53,7 @@ public class AccessTokenFilter implements ActionFilter{
         return null;
     }
 
-    private boolean checkToken(HttpServletRequest request , HttpServletResponse response) throws Exception{
+    private boolean checkToken(HttpServletRequest request , HttpServletResponse response) throws IOException {
         List<String> args = ManagementFactory.getRuntimeMXBean().getInputArguments();
         for (String arg : args) {
             if (arg.startsWith("-Xrunjdwp") || arg.startsWith("-agentlib:jdwp")) {

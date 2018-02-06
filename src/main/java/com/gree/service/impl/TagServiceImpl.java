@@ -4,6 +4,7 @@ import com.gree.bean.TagDb;
 import com.gree.service.TagService;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ import java.util.List;
 public class TagServiceImpl extends BaseService implements TagService {
 
     public TagDb add(TagDb tag) {
+        tag.setCreateDate(new Date());
+        tag.setUpdateDate(new Date());
         return dao.insert(tag);
     }
 

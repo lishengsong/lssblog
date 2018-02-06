@@ -25,7 +25,7 @@ import org.nutz.mvc.annotation.*;
 public class LoginAdminModule {
 
     @Inject
-    UserServiceImpl userService;
+    protected UserServiceImpl userService;
 
     @ApiOperation(httpMethod = "POST",
             value = "返回一个用户信息",

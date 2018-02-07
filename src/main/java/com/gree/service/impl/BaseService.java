@@ -24,7 +24,7 @@ public abstract class BaseService {
             pager.setPageNumber(1);
         }
         List<?> roles = dao.query(klass, cnd, pager);
-        dao.fetchLinks(roles, null);
+        //dao.fetchLinks(roles, null);
         pager.setRecordCount(dao.count(klass, cnd));
         return new QueryResult(roles, pager);
     }

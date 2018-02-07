@@ -29,6 +29,7 @@ public class Rs<T> implements Serializable {
 
 
 
+
     public Integer getCode() {
         return Code;
     }

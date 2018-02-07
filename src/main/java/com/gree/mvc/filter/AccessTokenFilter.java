@@ -12,6 +12,7 @@ import org.nutz.json.Json;
 import org.nutz.mvc.ActionContext;
 import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.View;
+import org.nutz.mvc.view.UTF8JsonView;
 import org.nutz.mvc.view.VoidView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,15 +35,19 @@ public class AccessTokenFilter implements ActionFilter{
 
     public View match(ActionContext actionContext) {
         System.out.println("AccessTokenFilter");
+        HttpServletResponse response = actionContext.getResponse();
+        HttpServletRequest request = actionContext.getRequest();
+        //response.setCharacterEncoding("UTF-8");
         try {
-            if(!checkToken(actionContext.getRequest(),actionContext.getResponse())) return new VoidView();
+           // request.setCharacterEncoding("UTF-8");
+            if(!checkToken(request,response)) return new VoidView();
         } catch (Exception e) {
             Rs<Object> resultBean = new Rs<Object>();
             resultBean.setCode(Rs.FAIL);
             resultBean.setMsg(e.getMessage());
             //e.printStackTrace();
             try {
-                actionContext.getResponse().getWriter().append(Json.toJson(resultBean));
+                response.getWriter().write(Json.toJson(resultBean));
             } catch (IOException e1) {
                 throw new RuntimeException(e1.getMessage());
                 //e1.printStackTrace();
@@ -65,7 +70,7 @@ public class AccessTokenFilter implements ActionFilter{
         if (authorization == null) {
             resultBean.setCode(Rs.NO_LOGIN);
 
-            response.getWriter().append(Json.toJson(resultBean));
+            response.getWriter().write(Json.toJson(resultBean));
             return false;
         }
         try {
@@ -79,12 +84,15 @@ public class AccessTokenFilter implements ActionFilter{
             logger.error(e.getMessage(), e);
             if (e instanceof ExpiredJwtException) { //签名过期
                 resultBean.setCode(Rs.LOGIN_EXPIRED);
+                resultBean.setMsg("expired login");
                 System.out.println("ExpiredJwtException");
             } else {
                 resultBean.setCode(Rs.NO_LOGIN);
+                resultBean.setMsg("no login");
                 System.out.println("Other JwtException");
             }
-            response.getWriter().append(Json.toJson(resultBean));
+
+            response.getWriter().write(Json.toJson(resultBean));
             return false;
         }
     }

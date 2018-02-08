@@ -22,7 +22,7 @@ import org.nutz.mvc.annotation.*;
  */
 
 
-@Api(value = "bgo/tag")
+@Api(value = "bgo/tag", description = "Operations about tag")
 @At("/bgo/tag")
 @Ok("json")
 @IocBean
@@ -44,9 +44,10 @@ public class TagAdminModule {
             @ApiImplicitParam(name = "tname", paramType="form", value = "标签名称", dataType="string", required = true)
             ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
     })
-    @POST
+
     @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
     @At("/add")
+    @POST
     public Rs add(@Param("tname") String tagName){
         if(Strings.isBlank(tagName)){
             return Rs.builder().code(Rs.FAIL).msg("标签名不能为空").build();
@@ -77,9 +78,9 @@ public class TagAdminModule {
             ,@ApiImplicitParam(name = "pageNumber", paramType="form", value = "第几页", dataType="long", required = false, defaultValue = "1")
             ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
     })
-    @POST
     @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
     @At("/query")
+    @POST
     public Rs queryList(@Param("tname")String tagName
             ,@ApiParam(name="Pager",value="分页类",required=false) @Param("..")Pager pager){
         Cnd cnd = Strings.isBlank(tagName) ? null : Cnd.where("tname", "like", "%"+tagName+"%");
@@ -93,18 +94,18 @@ public class TagAdminModule {
      * @param tid
      * @return
      */
-    @ApiOperation(httpMethod = "POST",
+    @ApiOperation(httpMethod = "GET",
             value = "根据标签id获取",
             response = Rs.class,
-            nickname="query")
+            nickname="fetch/{tid}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", paramType="form", value = "标签id", dataType="long", required = true)
+            @ApiImplicitParam(name = "id", paramType="path", value = "标签id", dataType="long", required = true)
             ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
     })
-    @POST
     @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
     @At("/fetch")
-    public Rs fetch(@Param("id") int tid){
+    @GET
+    public Rs fetch(@Param("tid") int tid){
         Rs<TagDb> rs = new Rs<TagDb>();
         if(tid>0){
             TagDb tag =tagService.fetch(tid);
@@ -114,6 +115,7 @@ public class TagAdminModule {
             } else {
                 rs.setCode(Rs.SUCCESS);
                 rs.setData(tag);
+                rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
             }
         } else {
             rs.setCode(Rs.FAIL);
@@ -121,6 +123,82 @@ public class TagAdminModule {
         }
         return rs;
     }
+
+    /**
+     * 编辑标签
+     * @param tag
+     * @return
+     */
+    @ApiOperation(httpMethod = "POST",
+            value = "修改标签",
+            response = Rs.class,
+            nickname="edit")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tid", paramType="form", value = "标签id", dataType="long", required = true)
+            ,@ApiImplicitParam(name = "tname", paramType="form", value = "标签名", dataType="long", required = false)
+            ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
+    })
+
+    @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
+    @At("/edit")
+    @POST
+    public Rs edit(@Param("..") TagDb tag){
+        Rs<TagDb> rs = new Rs<TagDb>();
+        if(tag.getTid()>0){
+            if(Strings.isBlank(tag.getTname())){
+                rs.setCode(Rs.FAIL);
+                rs.setMsg("标签名称不能为空");
+            } else {
+                if(tagService.edit(tag)>0){
+                    rs.setCode(Rs.SUCCESS);
+                    rs.setMsg("修改标签成功");
+                    rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                } else{
+                    rs.setCode(Rs.FAIL);
+                    rs.setMsg("修改标签失败");
+                }
+            }
+        } else {
+            rs.setCode(Rs.FAIL);
+            rs.setMsg("标签id不能为空");
+        }
+        return rs;
+    }
+
+    /**
+     *
+     * @param tid
+     * @return
+     */
+    @ApiOperation(httpMethod = "GET",
+            value = "删除标签",
+            response = Rs.class,
+            nickname="delete/{tid}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tid", paramType="path", value = "标签id", dataType="long", required = true)
+            ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
+    })
+    @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
+    @At("/delete/?")
+    @GET
+    public Rs delete(int tid){
+        Rs<TagDb> rs = new Rs<TagDb>();
+        if(tid>0){
+            if(tagService.delete(tid)>0) {
+                rs.setCode(Rs.SUCCESS);
+                rs.setMsg("删除标签成功");
+                rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+            } else {
+                rs.setCode(Rs.FAIL);
+                rs.setMsg("标签删除失败");
+            }
+        } else {
+            rs.setCode(Rs.FAIL);
+            rs.setMsg("标签id不能为空");
+        }
+        return rs;
+    }
+
 
 
 }

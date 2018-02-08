@@ -31,8 +31,8 @@ public class LoginAdminModule {
             value = "返回一个用户信息",
             response = Rs.class,
             nickname="login")
-    @ApiImplicitParams({@ApiImplicitParam(name = "username", paramType="form", value = "用户名", dataType="string", required = true)
-            ,@ApiImplicitParam(name = "password", paramType="form", value = "密码", dataType="string", required = true)})
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", paramType="form", value = "用户名", dataType="string", required = true, defaultValue = "admin")
+            ,@ApiImplicitParam(name = "password", paramType="form", value = "密码", dataType="string", required = true, defaultValue = "123456")})
     @POST
     //@Filters(@By(type = CrossOriginsFilter.class,args = {"ioc:crossFilter"}))
     @At("/login")

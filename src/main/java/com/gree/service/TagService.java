@@ -14,5 +14,6 @@ public interface TagService {
     TagDb add(TagDb tag);
     TagDb fetch(int id);
     int edit(TagDb tag);
+    int delete(int id);
 
 }

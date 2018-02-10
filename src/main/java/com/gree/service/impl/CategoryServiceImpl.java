@@ -3,8 +3,12 @@ package com.gree.service.impl;
 import com.gree.bean.CategoryDb;
 import com.gree.service.CategoryService;
 import org.nutz.dao.FieldFilter;
+import org.nutz.dao.QueryResult;
 import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.IocBean;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @user: 180296-Web寻梦狮
@@ -36,8 +40,21 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
         return dao.fetch(CategoryDb.class,id);
     }
 
+    /**
+     * 返回所有数据
+     * @return
+     */
+    public List<CategoryDb> query(){
+        return dao.query(CategoryDb.class,null);
+    }
+
+    /**
+     * 修改忽略空值
+     * @param tag
+     * @return
+     */
     public int edit(CategoryDb tag) {
-        return 0;
+        return Daos.ext(dao, FieldFilter.create(CategoryDb.class, true)).update(tag);
     }
 
     public int delete(int id) {

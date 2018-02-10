@@ -6,10 +6,12 @@ import com.gree.mvc.filter.AccessTokenFilter;
 import com.gree.security.JwtTonken;
 import com.gree.service.impl.CategoryServiceImpl;
 import com.gree.util.Rs;
+import io.jsonwebtoken.Jwt;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.log4j.Category;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
@@ -34,7 +36,7 @@ public class CategoryAdminModule  {
 
 
     @ApiOperation(httpMethod = "POST",
-            value = "返回标签对象",
+            value = "添加分类",
             response = Rs.class,
             nickname="add")
     @ApiImplicitParams({
@@ -65,10 +67,99 @@ public class CategoryAdminModule  {
         }
     }
 
+    /**
+     * 返回所有分类列表
+     * @return
+     */
+    @ApiOperation(httpMethod = "GET",
+            value = "返回分类列表",
+            response = Rs.class,
+            nickname="query")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
+    })
+    @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
+    @At("/query")
+    @GET
+    public Rs query(){
+        return Rs.builder().data(categoryService.query())
+                .code(Rs.SUCCESS)
+                .token(JwtTonken.createToken(UserContext.getCurrentuser().get()))
+                .build();
+    }
 
-    public Rs
 
+    @ApiOperation(httpMethod = "GET",
+            value = "根据id返回分类对象",
+            response = Rs.class,
+            nickname="fetch/{cateId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "cateId", paramType = "path", value = "分类id",dataType = "long", required = true)
+            ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
+    })
+    @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
+    @GET
+    public Rs fetch(@Param("cateId") int cid){
+        Rs<CategoryDb> rs = new Rs<CategoryDb>();
+        if(cid>0){
+            CategoryDb category = categoryService.fetch(cid);
+            if(category!=null){
+                rs.setCode(Rs.SUCCESS);
+                rs.setData(category);
+                rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+            } else {
+                rs.setCode(Rs.FAIL);
+                rs.setMsg("未找到对应标签");
+            }
+        } else {
+            rs.setCode(Rs.FAIL);
+            rs.setMsg("非法输入");
+        }
+        return rs;
+    }
 
+    /**
+     * 编辑标签
+     * @param tag
+     * @return
+     */
+    @ApiOperation(httpMethod = "POST",
+            value = "修改分类",
+            response = Rs.class,
+            nickname="edit")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tid", paramType="form", value = "分类id", dataType="long", required = true)
+            ,@ApiImplicitParam(name = "tname", paramType="form", value = "标签名", dataType="long", required = false)
+            ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
+    })
 
+    @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
+    @At("/edit")
+    @POST
+    public Rs edit(@Param("..") CategoryDb category){
+        Rs<CategoryDb> rs = new Rs<CategoryDb>();
+        if(category.getCid()>0){
+            if(Strings.isBlank(category.getCname())){
+                rs.setCode(Rs.FAIL);
+                rs.setMsg("标签名称不能为空");
+            } else if (categoryService.fetch(category.getCid()) == null){
+                rs.setCode(Rs.FAIL);
+                rs.setMsg("分类找不到");
+            } else {
+                if(categoryService.edit(category)>0){
+                    rs.setCode(Rs.SUCCESS);
+                    rs.setMsg("修改标签成功");
+                    rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                } else{
+                    rs.setCode(Rs.FAIL);
+                    rs.setMsg("修改标签失败");
+                }
+            }
+        } else {
+            rs.setCode(Rs.FAIL);
+            rs.setMsg("标签id不能为空");
+        }
+        return rs;
+    }
 
 }

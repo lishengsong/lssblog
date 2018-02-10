@@ -6,6 +6,7 @@ import org.nutz.dao.QueryResult;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 
+import javax.management.Query;
 import java.util.List;
 
 /**
@@ -28,5 +29,4 @@ public abstract class BaseService {
         pager.setRecordCount(dao.count(klass, cnd));
         return new QueryResult(roles, pager);
     }
-
 }

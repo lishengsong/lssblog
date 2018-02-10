@@ -29,7 +29,7 @@ public class TagServiceImpl extends BaseService implements TagService {
     }
 
     public int edit(TagDb tag) {
-        return dao.update(tag,"^$tname");
+        return dao.update(tag );
     }
 
     public int delete(int id) {

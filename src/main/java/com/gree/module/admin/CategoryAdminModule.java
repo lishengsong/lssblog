@@ -120,7 +120,7 @@ public class CategoryAdminModule  {
 
     /**
      * 编辑标签
-     * @param tag
+     * @param category
      * @return
      */
     @ApiOperation(httpMethod = "POST",
@@ -128,13 +128,16 @@ public class CategoryAdminModule  {
             response = Rs.class,
             nickname="edit")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "tid", paramType="form", value = "分类id", dataType="long", required = true)
-            ,@ApiImplicitParam(name = "tname", paramType="form", value = "标签名", dataType="long", required = false)
+            @ApiImplicitParam(name = "cid", paramType="form", value = "分类id", dataType="long", required = true)
+            ,@ApiImplicitParam(name = "cname", paramType="form", value = "标签名", dataType="string", required = false)
+            ,@ApiImplicitParam(name = "keywords", paramType="form", value = "关键词", dataType="string", required = false)
+            ,@ApiImplicitParam(name = "description", paramType="form", value = "描述", dataType="string", required = false)
+            ,@ApiImplicitParam(name = "sort", paramType="form", value = "排序", dataType="long", required = false, defaultValue = "0")
+            ,@ApiImplicitParam(name = "pid", paramType="form", value = "父级栏目id", dataType="long", required = false, defaultValue = "0")
             ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
     })
 
     @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
-    @At("/edit")
     @POST
     public Rs edit(@Param("..") CategoryDb category){
         Rs<CategoryDb> rs = new Rs<CategoryDb>();
@@ -142,22 +145,59 @@ public class CategoryAdminModule  {
             if(Strings.isBlank(category.getCname())){
                 rs.setCode(Rs.FAIL);
                 rs.setMsg("标签名称不能为空");
-            } else if (categoryService.fetch(category.getCid()) == null){
-                rs.setCode(Rs.FAIL);
-                rs.setMsg("分类找不到");
             } else {
-                if(categoryService.edit(category)>0){
-                    rs.setCode(Rs.SUCCESS);
-                    rs.setMsg("修改标签成功");
-                    rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
-                } else{
+                try {
+                    if(categoryService.edit(category)>0){
+                        rs.setCode(Rs.SUCCESS);
+                        rs.setMsg("修改分类成功");
+                        rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                    } else{
+                        rs.setCode(Rs.FAIL);
+                        rs.setMsg("修改分类失败");
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                     rs.setCode(Rs.FAIL);
-                    rs.setMsg("修改标签失败");
+                    rs.setMsg(e.getMessage());
                 }
             }
         } else {
             rs.setCode(Rs.FAIL);
             rs.setMsg("标签id不能为空");
+        }
+        return rs;
+    }
+
+    /**
+     * 删除分类id
+     * @param cid
+     * @return
+     */
+    @ApiOperation(httpMethod = "GET",
+            value = "删除分类",
+            response = Rs.class,
+            nickname="delete/{cateId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "cateId", paramType="path", value = "分类id", dataType="long", required = true)
+            ,@ApiImplicitParam(name = "Authorization", paramType = "header", value = "token input",dataType = "string", required = true)
+    })
+    @Filters(@By(type = AccessTokenFilter.class, args = {"ioc:tokenFilter"}))
+    @GET
+    @At("/delete/?")
+    public Rs delete(@Param("cateId") int cid){
+        Rs rs = new Rs();
+        if(cid > 0){
+            if(categoryService.delete(cid) > 0){
+                rs.setCode(Rs.SUCCESS);
+                rs.setMsg("删除成功！");
+                rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+            } else {
+                rs.setCode(Rs.FAIL);
+                rs.setMsg("删除失败！");
+            }
+        } else {
+            rs.setCode(Rs.FAIL);
+            rs.setMsg("无效的分类id");
         }
         return rs;
     }

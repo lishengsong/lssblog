@@ -11,6 +11,6 @@ public interface CategoryService {
 
     CategoryDb add(CategoryDb tag) throws Exception;
     CategoryDb fetch(int id);
-    int edit(CategoryDb tag);
+    int edit(CategoryDb tag) throws Exception;
     int delete(int id);
 }

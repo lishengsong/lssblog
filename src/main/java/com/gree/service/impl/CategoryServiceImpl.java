@@ -50,14 +50,20 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
     /**
      * 修改忽略空值
-     * @param tag
+     * @param category
      * @return
      */
-    public int edit(CategoryDb tag) {
-        return Daos.ext(dao, FieldFilter.create(CategoryDb.class, true)).update(tag);
+    public int edit(CategoryDb category) throws Exception{
+        int pid = category.getPid();
+        if(pid == 0 || (pid > 0 && dao.fetch(CategoryDb.class, pid)!= null)){
+            return Daos.ext(dao, FieldFilter.create(CategoryDb.class, true)).update(category);
+        } else {
+            throw  new Exception("非法传入父类id");
+        }
+
     }
 
     public int delete(int id) {
-        return 0;
+        return dao.delete(CategoryDb.class,id);
     }
 }

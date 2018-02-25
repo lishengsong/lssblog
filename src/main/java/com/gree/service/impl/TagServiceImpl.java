@@ -29,6 +29,7 @@ public class TagServiceImpl extends BaseService implements TagService {
     }
 
     public int edit(TagDb tag) {
+        tag.setUpdateDate(new Date());
         return dao.update(tag );
     }
 

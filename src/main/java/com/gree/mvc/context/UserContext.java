@@ -27,7 +27,7 @@ public class UserContext {
     public UserContext(UserDb user){
         currentUser.set(user);
     }
-    public static ThreadLocal<UserDb> getCurrentuser() {
+    public static ThreadLocal<UserDb> getCurrentUser() {
         return currentUser;
     }
     public void close() throws Exception {

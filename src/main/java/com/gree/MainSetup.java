@@ -1,6 +1,7 @@
 package com.gree;
 
 import com.gree.bean.UserDb;
+import com.gree.mvc.context.UserContext;
 import com.gree.service.impl.UserServiceImpl;
 import org.nutz.dao.Dao;
 import org.nutz.dao.util.Daos;
@@ -36,7 +37,9 @@ public class MainSetup implements Setup{
         // 初始化默认根用户
         if (dao.count(UserDb.class) == 0) {
             UserServiceImpl us = ioc.get(UserServiceImpl.class);
-            us.add(new UserDb("admin","123456"));
+            UserDb user = new UserDb("admin","123456");
+            user.setIsAdmin(1);
+            us.add(user);
         }
         // 获取NutQuartzCronJobFactory从而触发计划任务的初始化与启动
         //ioc.get(NutQuartzCronJobFactory.class);

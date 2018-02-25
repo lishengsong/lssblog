@@ -30,6 +30,7 @@ public class JwtTonken{
                     .setSubject("visualization")
                     .claim("username", user.getUsername())
                     .claim("password", user.getPassword())
+                    .claim("is_admin", user.getIsAdmin()) //判断是否是管理员
                     .claim("createTime", current)
                     .setExpiration(exp)
                     .signWith(SignatureAlgorithm.HS512, secret)

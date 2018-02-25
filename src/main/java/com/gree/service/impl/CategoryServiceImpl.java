@@ -3,12 +3,11 @@ package com.gree.service.impl;
 import com.gree.bean.CategoryDb;
 import com.gree.service.CategoryService;
 import org.nutz.dao.FieldFilter;
-import org.nutz.dao.QueryResult;
 import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @user: 180296-Web寻梦狮
@@ -28,7 +27,8 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
                     dao.insert(category);
                 }
             });*/
-
+            category.setUpdateDate(new Date());
+            category.setCreateDate(new Date());
             FieldFilter filter = FieldFilter.locked(CategoryDb.class, "^cid$");
             return Daos.ext(dao, filter).insert(category);
         } else {
@@ -56,6 +56,8 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
     public int edit(CategoryDb category) throws Exception{
         int pid = category.getPid();
         if(pid == 0 || (pid > 0 && dao.fetch(CategoryDb.class, pid)!= null)){
+
+            category.setUpdateDate(new Date());
             return Daos.ext(dao, FieldFilter.create(CategoryDb.class, true)).update(category);
         } else {
             throw  new Exception("非法传入父类id");

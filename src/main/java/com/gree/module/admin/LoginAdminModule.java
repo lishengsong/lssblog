@@ -21,7 +21,7 @@ import org.nutz.mvc.annotation.*;
 @IocBean
 @At("/bgo")
 @Ok("json")
-@Chain("crossOrigin")
+@Chain("crossOriginAdmin")
 public class LoginAdminModule {
 
     @Inject
@@ -76,7 +76,7 @@ public class LoginAdminModule {
         Rs<UserDb> rs = new Rs<UserDb>();
         rs.setCode(Rs.SUCCESS);
         rs.setMsg("logout");
-        rs.setData(UserContext.getCurrentuser().get());
+        rs.setData(UserContext.getCurrentUser().get());
         return rs;
     }
 }

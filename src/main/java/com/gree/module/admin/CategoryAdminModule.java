@@ -6,12 +6,10 @@ import com.gree.mvc.filter.AccessTokenFilter;
 import com.gree.security.JwtTonken;
 import com.gree.service.impl.CategoryServiceImpl;
 import com.gree.util.Rs;
-import io.jsonwebtoken.Jwt;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.log4j.Category;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
@@ -27,7 +25,7 @@ import org.nutz.mvc.annotation.*;
 @At("/bgo/category")
 @Ok("json")
 @IocBean
-@Chain("crossOrigin")
+@Chain("crossOriginAdmin")
 public class CategoryAdminModule  {
 
     @Inject
@@ -57,7 +55,7 @@ public class CategoryAdminModule  {
         } else {
             try {
                 if(categoryService.add(category)!=null)
-                    return Rs.builder().code(Rs.SUCCESS).msg("添加分类成功！").token(JwtTonken.createToken(UserContext.getCurrentuser().get())).build();
+                    return Rs.builder().code(Rs.SUCCESS).msg("添加分类成功！").token(JwtTonken.createToken(UserContext.getCurrentUser().get())).build();
                 else
                     return Rs.builder().code(Rs.FAIL).msg("添加分类失败").build();
             } catch (Exception e) {
@@ -84,7 +82,7 @@ public class CategoryAdminModule  {
     public Rs query(){
         return Rs.builder().data(categoryService.query())
                 .code(Rs.SUCCESS)
-                .token(JwtTonken.createToken(UserContext.getCurrentuser().get()))
+                .token(JwtTonken.createToken(UserContext.getCurrentUser().get()))
                 .build();
     }
 
@@ -106,7 +104,7 @@ public class CategoryAdminModule  {
             if(category!=null){
                 rs.setCode(Rs.SUCCESS);
                 rs.setData(category);
-                rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                rs.setToken(JwtTonken.createToken(UserContext.getCurrentUser().get()));
             } else {
                 rs.setCode(Rs.FAIL);
                 rs.setMsg("未找到对应标签");
@@ -150,7 +148,7 @@ public class CategoryAdminModule  {
                     if(categoryService.edit(category)>0){
                         rs.setCode(Rs.SUCCESS);
                         rs.setMsg("修改分类成功");
-                        rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                        rs.setToken(JwtTonken.createToken(UserContext.getCurrentUser().get()));
                     } else{
                         rs.setCode(Rs.FAIL);
                         rs.setMsg("修改分类失败");
@@ -190,7 +188,7 @@ public class CategoryAdminModule  {
             if(categoryService.delete(cid) > 0){
                 rs.setCode(Rs.SUCCESS);
                 rs.setMsg("删除成功！");
-                rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                rs.setToken(JwtTonken.createToken(UserContext.getCurrentUser().get()));
             } else {
                 rs.setCode(Rs.FAIL);
                 rs.setMsg("删除失败！");

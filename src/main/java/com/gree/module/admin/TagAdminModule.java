@@ -26,7 +26,7 @@ import org.nutz.mvc.annotation.*;
 @At("/bgo/tag")
 @Ok("json")
 @IocBean
-@Chain("crossOrigin")
+@Chain("crossOriginAdmin")
 public class TagAdminModule {
     @Inject
     protected TagServiceImpl tagService;
@@ -57,7 +57,7 @@ public class TagAdminModule {
             }
             TagDb tagDb = new TagDb();
             tagDb.setTname(tagName);
-            if(tagService.add(tagDb)!=null) return Rs.builder().code(Rs.SUCCESS).msg("添加标签成功！").token(JwtTonken.createToken(UserContext.getCurrentuser().get())).build();
+            if(tagService.add(tagDb)!=null) return Rs.builder().code(Rs.SUCCESS).msg("添加标签成功！").token(JwtTonken.createToken(UserContext.getCurrentUser().get())).build();
             else return Rs.builder().code(Rs.FAIL).msg("新增标签失败").build();
         }
     }
@@ -85,7 +85,7 @@ public class TagAdminModule {
             ,@ApiParam(name="Pager",value="分页类",required=false) @Param("..")Pager pager){
         Cnd cnd = Strings.isBlank(tagName) ? null : Cnd.where("tname", "like", "%"+tagName+"%");
         QueryResult tagList = tagService.query(TagDb.class,cnd,pager,null);
-        return Rs.builder().data(tagList).code(Rs.SUCCESS).token(JwtTonken.createToken(UserContext.getCurrentuser().get())).build();
+        return Rs.builder().data(tagList).code(Rs.SUCCESS).token(JwtTonken.createToken(UserContext.getCurrentUser().get())).build();
     }
 
 
@@ -115,7 +115,7 @@ public class TagAdminModule {
             } else {
                 rs.setCode(Rs.SUCCESS);
                 rs.setData(tag);
-                rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                rs.setToken(JwtTonken.createToken(UserContext.getCurrentUser().get()));
             }
         } else {
             rs.setCode(Rs.FAIL);
@@ -152,7 +152,7 @@ public class TagAdminModule {
                 if(tagService.edit(tag)>0){
                     rs.setCode(Rs.SUCCESS);
                     rs.setMsg("修改标签成功");
-                    rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                    rs.setToken(JwtTonken.createToken(UserContext.getCurrentUser().get()));
                 } else{
                     rs.setCode(Rs.FAIL);
                     rs.setMsg("修改标签失败");
@@ -187,7 +187,7 @@ public class TagAdminModule {
             if(tagService.delete(tid)>0) {
                 rs.setCode(Rs.SUCCESS);
                 rs.setMsg("删除标签成功");
-                rs.setToken(JwtTonken.createToken(UserContext.getCurrentuser().get()));
+                rs.setToken(JwtTonken.createToken(UserContext.getCurrentUser().get()));
             } else {
                 rs.setCode(Rs.FAIL);
                 rs.setMsg("标签删除失败");
